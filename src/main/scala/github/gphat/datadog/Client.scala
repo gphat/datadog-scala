@@ -60,8 +60,14 @@ class Client(
     doRequest(path = path, method = "GET")
   }
 
+  def getEvent(eventId: Long): Future[Response] = {
+    val path = Seq("events", eventId.toString).mkString("/")
+    doRequest(path = path, method = "GET")
+  }
+
   def getEvents(
-    start: Long, end: Long, priority: Option[String], sources: Option[Seq[String]], tags: Option[Seq[String]]
+    start: Long, end: Long, priority: Option[String] = None,
+    sources: Option[Seq[String]] = None, tags: Option[Seq[String]] = None
   ): Future[Response] = {
 
     val params = Map(
@@ -73,18 +79,20 @@ class Client(
     )
 
     val path = Seq("events").mkString("/")
-    doRequest(path = path, method = "POST", params = params)
+    doRequest(path = path, method = "POST", params = params, contentType = "form")
   }
 
   private def doRequest(
     path: String,
     method: String,
     body: Option[String] = None,
-    params: Map[String,Option[String]] = Map.empty) = {
+    params: Map[String,Option[String]] = Map.empty,
+    contentType: String = "json") = {
 
     httpAdapter.doRequest(
       method = method, scheme = scheme, authority = authority, path = path,
-      apiKey = apiKey, appKey = appKey, body = body, params = params
+      body = body, params = params ++ Map("api_key" -> Some(apiKey), "app_key" -> Some(appKey)),
+      contentType = contentType
     )
   }
 

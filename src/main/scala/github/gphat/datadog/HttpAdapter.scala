@@ -32,8 +32,6 @@ class HttpAdapter(
     path: String,
     method: String,
     body: Option[String] = None,
-    apiKey: String,
-    appKey: String,
     params: Map[String,Option[String]] = Map.empty,
     contentType: String = "json"): Future[Response] = {
 
@@ -51,7 +49,7 @@ class HttpAdapter(
       scheme = scheme,
       authority = Authority(host = Host(authority)),
       path = Path("/api/v1/" + path),
-      query = Query(filteredParams ++ Map("api_key" -> apiKey, "app_key" -> appKey))
+      query = Query(filteredParams)
     )
 
     // Use the provided case classes from spray-client
@@ -61,7 +59,19 @@ class HttpAdapter(
       case "GET" => Get(finalUrl, body)
       case "POST" => contentType match {
         case "json" => Post(finalUrl, HttpEntity(ContentTypes.`application/json`, body.get))
-        case _ => Post(finalUrl, FormData(filteredParams))
+        case _ => {
+          // This is going to be a form-encoded post. There's only one
+          // API call that works this way (ugh) so I'm not going to worry
+          // too much about making this work as cleanly as the rest of the
+          // stuff. (IMO)
+          val formUrl = Uri(
+            scheme = scheme,
+            authority = Authority(host = Host(authority)),
+            path = Path("/api/v1/" + path)
+          )
+
+          Post(formUrl, FormData(filteredParams))
+        }
       }
       case _ => throw new IllegalArgumentException("Unknown HTTP method: " + method)
     }

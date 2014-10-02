@@ -73,6 +73,7 @@ class HttpAdapter(
           Post(formUrl, FormData(filteredParams))
         }
       }
+      case "PUT" => Put(finalUrl, HttpEntity(ContentTypes.`application/json`, body.get))
       case _ => throw new IllegalArgumentException("Unknown HTTP method: " + method)
     }
 

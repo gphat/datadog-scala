@@ -55,6 +55,12 @@ class Client(
     doRequest(path = path, method = "POST", body = Some(write(json)))
   }
 
+  def addTimeboard(board: String): Future[Response] = {
+
+    val path = Seq("dash").mkString("/")
+    doRequest(path = path, method = "POST", body = Some(board))
+  }
+
   def getAllTimeboards(): Future[Response] = {
     val path = Seq("dash").mkString("/")
     doRequest(path = path, method = "GET")
@@ -80,6 +86,12 @@ class Client(
 
     val path = Seq("events").mkString("/")
     doRequest(path = path, method = "POST", params = params, contentType = "form")
+  }
+
+  def updateTimeboard(boardId: Long, board: String): Future[Response] = {
+
+    val path = Seq("dash", boardId).mkString("/")
+    doRequest(path = path, method = "PUT", body = Some(board))
   }
 
   private def doRequest(

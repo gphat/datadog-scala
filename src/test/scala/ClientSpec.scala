@@ -86,6 +86,26 @@ class ClientSpec extends Specification {
       adapter.getRequest must beSome.which(_.method == HttpMethods.POST)
     }
 
+    "handle add timeboard" in {
+      val res = Await.result(client.addTimeboard("POOP"), Duration(5, "second"))
+
+      res.statusCode must beEqualTo(200)
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/dash?api_key=apiKey&app_key=appKey")
+      adapter.getRequest must beSome.which(_.entity.asString == "POOP")
+
+      adapter.getRequest must beSome.which(_.method == HttpMethods.POST)
+    }
+
+    "handle update timeboard" in {
+      val res = Await.result(client.updateTimeboard(12345, "POOP"), Duration(5, "second"))
+
+      res.statusCode must beEqualTo(200)
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/dash/12345?api_key=apiKey&app_key=appKey")
+      adapter.getRequest must beSome.which(_.entity.asString == "POOP")
+
+      adapter.getRequest must beSome.which(_.method == HttpMethods.PUT)
+    }
+
     "handle get events" in {
       val res = Await.result(client.getEvents(start = 12345, end = 12346), Duration(5, "second"))
 

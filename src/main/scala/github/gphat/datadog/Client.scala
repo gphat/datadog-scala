@@ -189,9 +189,21 @@ class Client(
     doRequest(path = path, method = "GET")
   }
 
+  def muteAllAlerts: Future[Response] = {
+
+    val path = Seq("mute_alerts").mkString("/")
+    doRequest(path = path, method = "POST")
+  }
+
   def search(query: String): Future[Response] = {
     val path = Seq("search").mkString("/")
     doRequest(path = path, method = "GET", params = Map("q" -> Some(query)))
+  }
+
+  def unmuteAllAlerts: Future[Response] = {
+
+    val path = Seq("unmute_alerts").mkString("/")
+    doRequest(path = path, method = "POST")
   }
 
   def updateAlert(alertId: Long, alert: String): Future[Response] = {

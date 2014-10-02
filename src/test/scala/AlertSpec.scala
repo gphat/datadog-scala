@@ -73,5 +73,23 @@ class AlertSpec extends Specification {
 
       adapter.getRequest must beSome.which(_.method == HttpMethods.PUT)
     }
+
+    "handle mute all alerts" in {
+      val res = Await.result(client.muteAllAlerts, Duration(5, "second"))
+
+      res.statusCode must beEqualTo(200)
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/mute_alerts?api_key=apiKey&application_key=appKey")
+
+      adapter.getRequest must beSome.which(_.method == HttpMethods.POST)
+    }
+
+    "handle unmute all alerts" in {
+      val res = Await.result(client.unmuteAllAlerts, Duration(5, "second"))
+
+      res.statusCode must beEqualTo(200)
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/unmute_alerts?api_key=apiKey&application_key=appKey")
+
+      adapter.getRequest must beSome.which(_.method == HttpMethods.POST)
+    }
   }
 }

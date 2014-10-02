@@ -58,7 +58,9 @@ class HttpAdapter(
       case "DELETE" => Delete(finalUrl, body)
       case "GET" => Get(finalUrl, body)
       case "POST" => contentType match {
-        case "json" => Post(finalUrl, HttpEntity(ContentTypes.`application/json`, body.get))
+        case "json" => Post(finalUrl, body.map({
+          b => HttpEntity(ContentTypes.`application/json`, b)
+        }).getOrElse(HttpEntity.Empty))
         case _ => {
           // This is going to be a form-encoded post. There's only one
           // API call that works this way (ugh) so I'm not going to worry

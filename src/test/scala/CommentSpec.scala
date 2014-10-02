@@ -29,15 +29,7 @@ class CommentSpec extends Specification {
       httpAdapter = adapter
     )
 
-    // "handle get event" in {
-    //   val res = Await.result(client.getEvent(12345), Duration(5, "second"))
-
-    //   res.statusCode must beEqualTo(200)
-    //   adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/events/12345?api_key=apiKey&application_key=appKey")
-    //   adapter.getRequest must beSome.which(_.method == HttpMethods.GET)
-    // }
-
-    "handle add event" in {
+    "handle add comment" in {
       val res = Await.result(client.addComment(
         message = "hello", handle = Some("handul"), relatedEventId = Some(12345)
       ), Duration(5, "second"))
@@ -52,16 +44,18 @@ class CommentSpec extends Specification {
       adapter.getRequest must beSome.which(_.method == HttpMethods.POST)
     }
 
-    // "handle get events" in {
-    //   val res = Await.result(client.getEvents(start = 12345, end = 12346), Duration(5, "second"))
+    "handle update comment" in {
+      val res = Await.result(client.updateComment(
+        commentId = 12345, message = Some("hello"), handle = Some("handul")
+      ), Duration(5, "second"))
 
-    //   res.statusCode must beEqualTo(200)
-    //   adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/events")
-    //   val body = adapter.getRequest.get.entity.asString
-    //   body must contain("end=12346")
-    //   body must contain("start=12345")
-    //   body must contain("api_key=apiKey")
-    //   body must contain("application_key=appKey")
-    // }
+      res.statusCode must beEqualTo(200)
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/comments/12345?api_key=apiKey&application_key=appKey")
+      val body = parse(adapter.getRequest.get.entity.asString)
+      (body \ "message").extract[String] must beEqualTo("hello")
+      (body \ "handle").extract[String] must beEqualTo("handul")
+
+      adapter.getRequest must beSome.which(_.method == HttpMethods.PUT)
+    }
   }
 }

@@ -166,6 +166,19 @@ class Client(
     doRequest(path = path, method = "GET", params = Map("q" -> Some(query)))
   }
 
+  def updateComment(
+    commentId: Long, message: Option[String], handle: Option[String] = None,
+    relatedEventId: Option[Long] = None
+  ): Future[Response] = {
+
+    val json =
+      ("message" -> message) ~
+      ("handle" -> handle)
+
+    val path = Seq("comments", commentId).mkString("/")
+    doRequest(path = path, method = "PUT", body = Some(write(json)))
+  }
+
   def updateScreenboard(boardId: Long, board: String): Future[Response] = {
 
     val path = Seq("screen", boardId).mkString("/")

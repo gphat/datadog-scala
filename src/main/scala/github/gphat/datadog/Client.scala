@@ -114,7 +114,7 @@ class Client(
 
     httpAdapter.doRequest(
       method = method, scheme = scheme, authority = authority, path = path,
-      body = body, params = params ++ Map("api_key" -> Some(apiKey), "app_key" -> Some(appKey)),
+      body = body, params = params ++ Map("api_key" -> Some(apiKey), "application_key" -> Some(appKey)),
       contentType = contentType
     )
   }

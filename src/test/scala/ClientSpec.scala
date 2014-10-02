@@ -62,7 +62,7 @@ class ClientSpec extends Specification {
       val res = Await.result(client.getAllTimeboards, Duration(5, "second"))
 
       res.statusCode must beEqualTo(200)
-      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/dash?api_key=apiKey&app_key=appKey")
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/dash?api_key=apiKey&application_key=appKey")
       adapter.getRequest must beSome.which(_.method == HttpMethods.GET)
     }
 
@@ -70,7 +70,7 @@ class ClientSpec extends Specification {
       val res = Await.result(client.getEvent(12345), Duration(5, "second"))
 
       res.statusCode must beEqualTo(200)
-      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/events/12345?api_key=apiKey&app_key=appKey")
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/events/12345?api_key=apiKey&application_key=appKey")
       adapter.getRequest must beSome.which(_.method == HttpMethods.GET)
     }
 
@@ -78,7 +78,7 @@ class ClientSpec extends Specification {
       val res = Await.result(client.addEvent(title = "poop", text = "fart"), Duration(5, "second"))
 
       res.statusCode must beEqualTo(200)
-      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/events?api_key=apiKey&app_key=appKey")
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/events?api_key=apiKey&application_key=appKey")
       val body = parse(adapter.getRequest.get.entity.asString)
       (body \ "title").extract[String] must beEqualTo("poop")
       (body \ "text").extract[String] must beEqualTo("fart")
@@ -90,7 +90,7 @@ class ClientSpec extends Specification {
       val res = Await.result(client.addTimeboard("POOP"), Duration(5, "second"))
 
       res.statusCode must beEqualTo(200)
-      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/dash?api_key=apiKey&app_key=appKey")
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/dash?api_key=apiKey&application_key=appKey")
       adapter.getRequest must beSome.which(_.entity.asString == "POOP")
 
       adapter.getRequest must beSome.which(_.method == HttpMethods.POST)
@@ -100,7 +100,7 @@ class ClientSpec extends Specification {
       val res = Await.result(client.getTimeboard(12345), Duration(5, "second"))
 
       res.statusCode must beEqualTo(200)
-      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/dash/12345?api_key=apiKey&app_key=appKey")
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/dash/12345?api_key=apiKey&application_key=appKey")
       adapter.getRequest must beSome.which(_.method == HttpMethods.GET)
     }
 
@@ -108,7 +108,7 @@ class ClientSpec extends Specification {
       val res = Await.result(client.deleteTimeboard(12345), Duration(5, "second"))
 
       res.statusCode must beEqualTo(200)
-      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/dash/12345?api_key=apiKey&app_key=appKey")
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/dash/12345?api_key=apiKey&application_key=appKey")
 
       adapter.getRequest must beSome.which(_.method == HttpMethods.DELETE)
     }
@@ -117,7 +117,7 @@ class ClientSpec extends Specification {
       val res = Await.result(client.updateTimeboard(12345, "POOP"), Duration(5, "second"))
 
       res.statusCode must beEqualTo(200)
-      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/dash/12345?api_key=apiKey&app_key=appKey")
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/dash/12345?api_key=apiKey&application_key=appKey")
       adapter.getRequest must beSome.which(_.entity.asString == "POOP")
 
       adapter.getRequest must beSome.which(_.method == HttpMethods.PUT)
@@ -132,7 +132,7 @@ class ClientSpec extends Specification {
       body must contain("end=12346")
       body must contain("start=12345")
       body must contain("api_key=apiKey")
-      body must contain("app_key=appKey")
+      body must contain("application_key=appKey")
     }
 
     "handle add metrics" in {
@@ -156,7 +156,7 @@ class ClientSpec extends Specification {
       ), Duration(5, "second"))
 
       res.statusCode must beEqualTo(200)
-      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/series?api_key=apiKey&app_key=appKey")
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/series?api_key=apiKey&application_key=appKey")
       val body = parse(adapter.getRequest.get.entity.asString)
       val names = for {
         JObject(series) <- body

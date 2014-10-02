@@ -30,10 +30,10 @@ class TagSpec extends Specification {
     )
 
     "handle get all tags" in {
-      val res = Await.result(client.getTags, Duration(5, "second"))
+      val res = Await.result(client.getAllTags, Duration(5, "second"))
 
       res.statusCode must beEqualTo(200)
-      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/tags?api_key=apiKey&application_key=appKey")
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/tags/hosts?api_key=apiKey&application_key=appKey")
       adapter.getRequest must beSome.which(_.method == HttpMethods.GET)
     }
 
@@ -47,31 +47,33 @@ class TagSpec extends Specification {
     //   adapter.getRequest must beSome.which(_.method == HttpMethods.POST)
     // }
 
-    // "handle get screenboard" in {
-    //   val res = Await.result(client.getScreenboard(12345), Duration(5, "second"))
+    "handle add tags for host" in {
+      val res = Await.result(client.addTags("12345", Seq("foo:bar", "butt")), Duration(5, "second"))
 
-    //   res.statusCode must beEqualTo(200)
-    //   adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/screen/12345?api_key=apiKey&application_key=appKey")
-    //   adapter.getRequest must beSome.which(_.method == HttpMethods.GET)
-    // }
+      res.statusCode must beEqualTo(200)
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/tags/hosts/12345?api_key=apiKey&application_key=appKey")
+      adapter.getRequest must beSome.which(_.method == HttpMethods.POST)
 
-    // "handle delete screenboard" in {
-    //   val res = Await.result(client.deleteScreenboard(12345), Duration(5, "second"))
+      val body = parse(adapter.getRequest.get.entity.asString)
+      (body \ "tags")(0).extract[String] must beEqualTo("foo:bar")
+      (body \ "tags")(1).extract[String] must beEqualTo("butt")
+    }
 
-    //   res.statusCode must beEqualTo(200)
-    //   adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/screen/12345?api_key=apiKey&application_key=appKey")
+    "handle get tags for host" in {
+      val res = Await.result(client.getTags("12345"), Duration(5, "second"))
 
-    //   adapter.getRequest must beSome.which(_.method == HttpMethods.DELETE)
-    // }
+      res.statusCode must beEqualTo(200)
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/tags/hosts/12345?api_key=apiKey&application_key=appKey")
+      adapter.getRequest must beSome.which(_.method == HttpMethods.GET)
+    }
 
-    // "handle update screenboard" in {
-    //   val res = Await.result(client.updateScreenboard(12345, "POOP"), Duration(5, "second"))
+    "handle delete tags" in {
+      val res = Await.result(client.deleteTags("12345"), Duration(5, "second"))
 
-    //   res.statusCode must beEqualTo(200)
-    //   adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/screen/12345?api_key=apiKey&application_key=appKey")
-    //   adapter.getRequest must beSome.which(_.entity.asString == "POOP")
+      res.statusCode must beEqualTo(200)
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/tags/hosts/12345?api_key=apiKey&application_key=appKey")
 
-    //   adapter.getRequest must beSome.which(_.method == HttpMethods.PUT)
-    // }
+      adapter.getRequest must beSome.which(_.method == HttpMethods.DELETE)
+    }
   }
 }

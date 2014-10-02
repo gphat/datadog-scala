@@ -24,6 +24,20 @@ class Client(
 
   implicit val formats = Serialization.formats(NoTypeHints) + metricSerializer
 
+  def addComment(
+    message: String, handle: Option[String] = None,
+    relatedEventId: Option[Long] = None
+  ): Future[Response] = {
+
+    val json =
+      ("message" -> message) ~
+      ("handle" -> handle) ~
+      ("related_event_id" -> relatedEventId)
+
+    val path = Seq("comments").mkString("/")
+    doRequest(path = path, method = "POST", body = Some(write(json)))
+  }
+
   def addEvent(
     title: String, text: String, dateHappened: Option[String] = None,
     priority: Option[String] = None, tags: Option[Seq[String]] = None,

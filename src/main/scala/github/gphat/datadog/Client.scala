@@ -55,10 +55,22 @@ class Client(
     doRequest(path = path, method = "POST", body = Some(write(json)))
   }
 
+  def addScreenboard(board: String): Future[Response] = {
+
+    val path = Seq("screen").mkString("/")
+    doRequest(path = path, method = "POST", body = Some(board))
+  }
+
   def addTimeboard(board: String): Future[Response] = {
 
     val path = Seq("dash").mkString("/")
     doRequest(path = path, method = "POST", body = Some(board))
+  }
+
+  def deleteScreenboard(boardId: Long): Future[Response] = {
+
+    val path = Seq("screen", boardId).mkString("/")
+    doRequest(path = path, method = "DELETE")
   }
 
   def deleteTimeboard(boardId: Long): Future[Response] = {
@@ -67,8 +79,18 @@ class Client(
     doRequest(path = path, method = "DELETE")
   }
 
+  def getScreenboard(id: Long): Future[Response] = {
+    val path = Seq("screen", id.toString).mkString("/")
+    doRequest(path = path, method = "GET")
+  }
+
   def getTimeboard(id: Long): Future[Response] = {
     val path = Seq("dash", id.toString).mkString("/")
+    doRequest(path = path, method = "GET")
+  }
+
+  def getAllScreenboards(): Future[Response] = {
+    val path = Seq("screen").mkString("/")
     doRequest(path = path, method = "GET")
   }
 
@@ -97,6 +119,17 @@ class Client(
 
     val path = Seq("events").mkString("/")
     doRequest(path = path, method = "POST", params = params, contentType = "form")
+  }
+
+  def getTags: Future[Response] = {
+    val path = Seq("tags").mkString("/")
+    doRequest(path = path, method = "GET")
+  }
+
+  def updateScreenboard(boardId: Long, board: String): Future[Response] = {
+
+    val path = Seq("screen", boardId).mkString("/")
+    doRequest(path = path, method = "PUT", body = Some(board))
   }
 
   def updateTimeboard(boardId: Long, board: String): Future[Response] = {

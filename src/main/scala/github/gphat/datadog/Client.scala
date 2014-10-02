@@ -67,6 +67,11 @@ class Client(
     doRequest(path = path, method = "DELETE")
   }
 
+  def getTimeboard(id: Long): Future[Response] = {
+    val path = Seq("dash", id.toString).mkString("/")
+    doRequest(path = path, method = "GET")
+  }
+
   def getAllTimeboards(): Future[Response] = {
     val path = Seq("dash").mkString("/")
     doRequest(path = path, method = "GET")

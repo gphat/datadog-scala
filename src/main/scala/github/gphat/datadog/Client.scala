@@ -84,10 +84,22 @@ class Client(
     doRequest(path = path, method = "POST", body = Some(write(json)))
   }
 
+  def addAlert(alert: String): Future[Response] = {
+
+    val path = Seq("alert").mkString("/")
+    doRequest(path = path, method = "POST", body = Some(alert))
+  }
+
   def addTimeboard(board: String): Future[Response] = {
 
     val path = Seq("dash").mkString("/")
     doRequest(path = path, method = "POST", body = Some(board))
+  }
+
+  def deleteAlert(alertId: Long): Future[Response] = {
+
+    val path = Seq("alert", alertId).mkString("/")
+    doRequest(path = path, method = "DELETE")
   }
 
   def deleteComment(commentId: Long): Future[Response] = {
@@ -114,6 +126,11 @@ class Client(
     doRequest(path = path, method = "DELETE")
   }
 
+  def getAlert(id: Long): Future[Response] = {
+    val path = Seq("alert", id.toString).mkString("/")
+    doRequest(path = path, method = "GET")
+  }
+
   def getScreenboard(id: Long): Future[Response] = {
     val path = Seq("screen", id.toString).mkString("/")
     doRequest(path = path, method = "GET")
@@ -121,6 +138,11 @@ class Client(
 
   def getTimeboard(id: Long): Future[Response] = {
     val path = Seq("dash", id.toString).mkString("/")
+    doRequest(path = path, method = "GET")
+  }
+
+  def getAllAlerts(): Future[Response] = {
+    val path = Seq("alert").mkString("/")
     doRequest(path = path, method = "GET")
   }
 
@@ -170,6 +192,12 @@ class Client(
   def search(query: String): Future[Response] = {
     val path = Seq("search").mkString("/")
     doRequest(path = path, method = "GET", params = Map("q" -> Some(query)))
+  }
+
+  def updateAlert(alertId: Long, alert: String): Future[Response] = {
+
+    val path = Seq("alert", alertId).mkString("/")
+    doRequest(path = path, method = "PUT", body = Some(alert))
   }
 
   def updateComment(

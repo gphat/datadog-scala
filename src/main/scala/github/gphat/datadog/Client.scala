@@ -189,6 +189,24 @@ class Client(
     doRequest(path = path, method = "GET")
   }
 
+  def graphSnapshot(query: String, start: Long, end: Long, eventQuery: Option[String]): Future[Response] = {
+    val path = Seq("graph", "snapshot").mkString("/")
+    doRequest(path = path, method = "GET", params = Map(
+      "metric_query" -> Some(query),
+      "start" -> Some(start.toString),
+      "end" -> Some(end.toString),
+      "event_query" -> eventQuery
+    ))
+  }
+
+  def inviteUsers(emails: Seq[String]): Future[Response] = {
+
+    val json = ("emails" -> emails)
+
+    val path = Seq("invite_users").mkString("/")
+    doRequest(path = path, method = "POST", body = Some(write(json)))
+  }
+
   def muteAllAlerts: Future[Response] = {
 
     val path = Seq("mute_alerts").mkString("/")

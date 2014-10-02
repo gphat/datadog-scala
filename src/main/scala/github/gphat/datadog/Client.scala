@@ -90,6 +90,12 @@ class Client(
     doRequest(path = path, method = "POST", body = Some(board))
   }
 
+  def deleteComment(commentId: Long): Future[Response] = {
+
+    val path = Seq("comments", commentId).mkString("/")
+    doRequest(path = path, method = "DELETE")
+  }
+
   def deleteScreenboard(boardId: Long): Future[Response] = {
 
     val path = Seq("screen", boardId).mkString("/")

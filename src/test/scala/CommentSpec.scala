@@ -57,5 +57,14 @@ class CommentSpec extends Specification {
 
       adapter.getRequest must beSome.which(_.method == HttpMethods.PUT)
     }
+
+    "handle delete comment" in {
+      val res = Await.result(client.deleteComment(12345), Duration(5, "second"))
+
+      res.statusCode must beEqualTo(200)
+      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/comments/12345?api_key=apiKey&application_key=appKey")
+
+      adapter.getRequest must beSome.which(_.method == HttpMethods.DELETE)
+    }
   }
 }

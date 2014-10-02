@@ -37,16 +37,6 @@ class TagSpec extends Specification {
       adapter.getRequest must beSome.which(_.method == HttpMethods.GET)
     }
 
-    // "handle add screenboard" in {
-    //   val res = Await.result(client.addScreenboard("POOP"), Duration(5, "second"))
-
-    //   res.statusCode must beEqualTo(200)
-    //   adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/screen?api_key=apiKey&application_key=appKey")
-    //   adapter.getRequest must beSome.which(_.entity.asString == "POOP")
-
-    //   adapter.getRequest must beSome.which(_.method == HttpMethods.POST)
-    // }
-
     "handle add tags for host" in {
       val res = Await.result(client.addTags("12345", Seq("foo:bar", "butt")), Duration(5, "second"))
 

@@ -147,6 +147,11 @@ class Client(
     doRequest(path = path, method = "GET")
   }
 
+  def search(query: String): Future[Response] = {
+    val path = Seq("search").mkString("/")
+    doRequest(path = path, method = "GET", params = Map("q" -> Some(query)))
+  }
+
   def updateScreenboard(boardId: Long, board: String): Future[Response] = {
 
     val path = Seq("screen", boardId).mkString("/")

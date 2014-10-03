@@ -180,7 +180,7 @@ class Client(
     )
 
     val path = Seq("events").mkString("/")
-    doRequest(path = path, method = "POST", params = params, contentType = "form")
+    doRequest(path = path, method = "GET", params = params, contentType = "form")
   }
 
   // XXX source and by_source?

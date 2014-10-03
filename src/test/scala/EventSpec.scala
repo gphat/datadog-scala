@@ -53,12 +53,12 @@ class EventSpec extends Specification {
       val res = Await.result(client.getEvents(start = 12345, end = 12346), Duration(5, "second"))
 
       res.statusCode must beEqualTo(200)
-      adapter.getRequest must beSome.which(_.uri.toString == "https://app.datadoghq.com/api/v1/events")
-      val body = adapter.getRequest.get.entity.asString
-      body must contain("end=12346")
-      body must contain("start=12345")
-      body must contain("api_key=apiKey")
-      body must contain("application_key=appKey")
+      val uri = adapter.getRequest.get.uri.toString
+      uri must contain("https://app.datadoghq.com/api/v1/events")
+      uri must contain("end=12346")
+      uri must contain("start=12345")
+      uri must contain("api_key=apiKey")
+      uri must contain("application_key=appKey")
     }
   }
 }

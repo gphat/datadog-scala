@@ -1,4 +1,4 @@
-organization := "keen"
+organization := "datadog-scala"
 
 name := "datadog-scala"
 
@@ -37,3 +37,5 @@ libraryDependencies += "org.clapper" %% "grizzled-slf4j" % "1.0.2"
 libraryDependencies += "org.specs2" %% "specs2" % "2.4.5" % "test"
 
 libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.6" % "test"
+
+publishTo := Some(Resolver.file("file",  new File( "/Users/gphat/src/mvn-repo/releases" )) )

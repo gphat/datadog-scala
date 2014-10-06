@@ -2,7 +2,7 @@
 
 A Scala library for interacting with the Datadog API.
 
-As of October 2014 this librari covers all the methods in the [Datadog API Documentation](http://docs.datadoghq.com/api/).
+As of October 2014 this library covers all the methods in the [Datadog API Documentation](http://docs.datadoghq.com/api/).
 
 # Example
 

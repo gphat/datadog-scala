@@ -15,12 +15,12 @@ client.getAllTimeboards.map({ response =>
 })
 ```
 
-# Getting It
+# Using It
 
 ```
 // And a the resolver
 resolvers += "gphat" at "https://raw.github.com/gphat/mvn-repo/master/releases/"
 
 // Add the Dep
-libraryDependencies += "datadog-scala" %% "datadog-scala" % "1.0.0-SNAPSHOT"
+libraryDependencies += "datadog-scala" %% "datadog-scala" % "1.0.0"
 ```

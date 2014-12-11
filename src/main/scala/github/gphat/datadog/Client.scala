@@ -62,7 +62,13 @@ class Client(
   def addMetrics(series: Seq[Metric]): Future[Response] = {
 
     val json = (
-      "series" -> series
+      "series" -> series.map { s =>
+        ("metric" -> s.name) ~
+        ("points" -> s.points.map(tuple => Seq(JInt(tuple._1), JDouble(tuple._2)))) ~
+        ("metric_type" -> s.metricType) ~
+        ("tags" -> s.tags) ~
+        ("host" -> s.host)
+      }
     )
 
     val path = Seq("series").mkString("/")

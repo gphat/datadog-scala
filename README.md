@@ -21,6 +21,6 @@ client.getAllTimeboards.foreach({ response =>
 // And a the resolver
 resolvers += "gphat" at "https://raw.github.com/gphat/mvn-repo/master/releases/"
 
-// Add the Dep
-libraryDependencies += "datadog-scala" %% "datadog-scala" % "1.0.1"
+// Add the Dep, 2.10 and 2.11 artifacts are published!
+libraryDependencies += "datadog-scala" %% "datadog-scala" % "1.0.2"
 ```

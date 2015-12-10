@@ -9,6 +9,9 @@ As of October 2014 this library covers all the methods in the [Datadog API Docum
 # Example
 
 ```scala
+import github.gphat.datadog.Client
+import scala.concurrent.ExecutionContext.Implicits.global
+
 val client = new Client(apiKey = "XXX", appKey = "XXX")
 client.getAllTimeboards.foreach({ response =>
     println(respone.body)

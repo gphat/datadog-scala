@@ -11,7 +11,7 @@ As of October 2014 this library covers all the methods in the [Datadog API Docum
 ```scala
 val client = new Client(apiKey = "XXX", appKey = "XXX")
 client.getAllTimeboards.foreach({ response =>
-    println(respone.body)
+    println(response.body)
 })
 ```
 

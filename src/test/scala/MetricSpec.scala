@@ -72,5 +72,26 @@ class MetricSpec extends Specification {
 
       adapter.getRequest must beSome.which(_.method == HttpMethods.POST)
     }
+
+    "handle query timeseries" in {
+      val res = Await.result(client.query(
+        query = "system.cpu.idle{*}by{host}",
+        from = 1470453155,
+        to = 1470539518
+      ), Duration(5, "second"))
+
+      res.statusCode must beEqualTo(200)
+      val params = adapter.getRequest.get.uri.query.toMap
+
+      params must havePairs(
+        "api_key" -> "apiKey",
+        "application_key" -> "appKey",
+        "query" -> "system.cpu.idle{*}by{host}",
+        "from" -> "1470453155",
+        "to" -> "1470539518"
+      )
+
+      adapter.getRequest must beSome.which(_.method == HttpMethods.GET)
+    }
   }
 }

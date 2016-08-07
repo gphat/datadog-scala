@@ -60,5 +60,15 @@ class EventSpec extends Specification {
       uri must contain("api_key=apiKey")
       uri must contain("application_key=appKey")
     }
+
+    "handle delete events" in {
+      val res = Await.result(client.deleteEvent(eventId = 123456), Duration(5, "second"))
+
+      res.statusCode must beEqualTo(200)
+      val uri = adapter.getRequest.get.uri.toString
+      uri must contain("https://app.datadoghq.com/api/v1/events/123456")
+      uri must contain("api_key=apiKey")
+      uri must contain("application_key=appKey")
+    }
   }
 }

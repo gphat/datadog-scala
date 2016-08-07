@@ -1,12 +1,12 @@
-organization := "datadog-scala"
+organization := "com.github.gphat"
 
 name := "datadog-scala"
 
-version := "1.0.2"
+version := "1.1.0"
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.8"
 
-crossScalaVersions := Seq("2.10.4", "2.11.6")
+crossScalaVersions := Seq("2.10.6", "2.11.8")
 
 resolvers += "spray repo" at "http://repo.spray.io"
 

@@ -75,6 +75,23 @@ class Client(
     doRequest(path = path, method = "POST", body = Some(write(json)))
   }
 
+  def addServiceCheck(
+    check: String, hostName: String, status: Int,
+    timestamp: Option[Int] = None, message: Option[String] = None,
+    tags: Option[Seq[String]] = None
+  ): Future[Response] = {
+
+    val path = Seq("check_run").mkString("/")
+    doRequest(path = path, method = "POST", params = Map(
+      "check" -> Some(check),
+      "host_name" -> Some(hostName),
+      "status" -> Some(status.toString),
+      "timestamp" -> timestamp.map { _.toString },
+      "message" -> message,
+      "tags" -> tags.map({ tees => tees.mkString(",") })
+    ))
+  }
+
   def addScreenboard(board: String): Future[Response] = {
 
     val path = Seq("screen").mkString("/")
@@ -111,6 +128,12 @@ class Client(
   def deleteComment(commentId: Long): Future[Response] = {
 
     val path = Seq("comments", commentId).mkString("/")
+    doRequest(path = path, method = "DELETE")
+  }
+
+  def deleteEvent(eventId: Long): Future[Response] = {
+
+    val path = Seq("events", eventId).mkString("/")
     doRequest(path = path, method = "DELETE")
   }
 
@@ -217,6 +240,15 @@ class Client(
 
     val path = Seq("mute_alerts").mkString("/")
     doRequest(path = path, method = "POST")
+  }
+
+  def query(query: String, from: Int, to: Int): Future[Response] = {
+    val path = Seq("query")
+    doRequest(path = "query", method = "GET", params = Map(
+      "query" -> Some(query),
+      "from" -> Some(from.toString),
+      "to" -> Some(to.toString)
+    ))
   }
 
   def search(query: String): Future[Response] = {

@@ -1,18 +1,19 @@
 package github.gphat.datadog
 
+import java.util.concurrent.TimeUnit
+
 import akka.actor.ActorSystem
 import akka.io.IO
 import akka.pattern.ask
 import akka.util.Timeout
 import grizzled.slf4j.Logging
-import java.util.concurrent.TimeUnit
-import scala.concurrent.Future
-import scala.util.{Failure,Success}
 import spray.can.Http
-import spray.http._
 import spray.http.Uri._
-import spray.http.HttpHeaders.RawHeader
+import spray.http._
 import spray.httpx.RequestBuilding._
+
+import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 class HttpAdapter(
   httpTimeoutSeconds: Int = 10,
@@ -97,8 +98,8 @@ class HttpAdapter(
   def shutdown = {
     (IO(Http) ? Http.CloseAll) onComplete {
       // When this completes we will shutdown the actor system if it wasn't
-      // supplies by the user.
-      case Success(x) => actorSystem.foreach { x => finalAS.shutdown() }
+      // supplied by the user.
+      case Success(x) => if (actorSystem.isEmpty) { finalAS.shutdown() }
       // If we fail to close not sure what we can except rethrow
       case Failure(t) => throw t
     }

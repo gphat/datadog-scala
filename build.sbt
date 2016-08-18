@@ -36,4 +36,4 @@ libraryDependencies += "org.specs2" %% "specs2-core" % "3.0.1" % "test"
 
 libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.6" % "test"
 
-publishTo := Some(Resolver.file("file",  new File( "/Users/gphat/src/mvn-repo/releases" )) )
+Publish.settings

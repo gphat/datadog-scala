@@ -1,3 +1,7 @@
+# 1.1.3
+
+- Release fuckery.
+
 # 1.1.0
 
 Bugfixes:

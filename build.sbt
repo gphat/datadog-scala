@@ -38,4 +38,6 @@ libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.6" % "test"
 
 releasePublishArtifactsAction := PgpKeys.publishSigned.value
 
+releaseCrossBuild := true
+
 Publish.settings

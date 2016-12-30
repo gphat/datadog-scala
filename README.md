@@ -24,5 +24,5 @@ This library is available on Maven Central.
 
 ```
 // Add the Dep, 2.10 and 2.11 artifacts are published!
-libraryDependencies += "datadog-scala" %% "datadog-scala" % "1.1.3"
+libraryDependencies += "com.github.gphat" %% "datadog-scala" % "1.1.3"
 ```

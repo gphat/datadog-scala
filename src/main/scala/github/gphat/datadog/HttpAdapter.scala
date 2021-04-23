@@ -99,7 +99,7 @@ class HttpAdapter(
     (IO(Http) ? Http.CloseAll) onComplete {
       // When this completes we will shutdown the actor system if it wasn't
       // supplied by the user.
-      case Success(x) => if (actorSystem.isEmpty) { finalAS.shutdown() }
+      case Success(x) => if (actorSystem.isEmpty) { finalAS.terminate() }
       // If we fail to close not sure what we can except rethrow
       case Failure(t) => throw t
     }

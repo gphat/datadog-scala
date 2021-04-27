@@ -28,7 +28,7 @@ libraryDependencies += "org.json4s" %% "json4s-native" % "3.5.0"
 
 libraryDependencies += "org.json4s" %% "json4s-jackson" % "3.5.0"
 
-libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.2"
+libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.5.26"
 
 libraryDependencies += "org.clapper" %% "grizzled-slf4j" % "1.0.2"
 
@@ -36,8 +36,8 @@ libraryDependencies += "org.specs2" %% "specs2-core" % "3.0.1" % "test"
 
 libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.6" % "test"
 
-releasePublishArtifactsAction := PgpKeys.publishSigned.value
-
 releaseCrossBuild := true
 
 Publish.settings
+
+publishTo := Some(Resolver.file("file", new File("/tmp/fck")))

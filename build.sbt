@@ -24,9 +24,11 @@ libraryDependencies += "io.spray" %% "spray-httpx" % "1.3.2"
 
 libraryDependencies += "io.spray" %% "spray-util" % "1.3.2"
 
-libraryDependencies += "org.json4s" %% "json4s-native" % "3.5.0"
+libraryDependencies += "org.json4s" %% "json4s-native" % "3.5.3"
 
-libraryDependencies += "org.json4s" %% "json4s-jackson" % "3.5.0"
+libraryDependencies += "org.json4s" %% "json4s-core" % "3.5.3"
+
+libraryDependencies += "org.json4s" %% "json4s-jackson" % "3.5.3"
 
 libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.5.26"
 
